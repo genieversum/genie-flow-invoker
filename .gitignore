@@ -6,3 +6,4 @@ main.log
 dist/
 build/
 genie_flow_invoker.egg-info/
+genie_flow_invoker/_version.py

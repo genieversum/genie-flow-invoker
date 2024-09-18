@@ -1,11 +1,9 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
+requires = ["setuptools>=64", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
-"version_scheme" = "post-release"
-"local_scheme" = "no-local-version"
-"write_to" = "genie_flow_invoker/__version__.py"
+"write_to" = "genie_flow_invoker/_version.py"
 
 [tool.setuptools.package-dir]
 genie_flow_invoker = "genie_flow_invoker"
@@ -23,5 +21,12 @@ classifiers=[
     'License :: OSI Approved :: MIT License',
     'Operating System :: OS Independent',
 ]
+dependencies=[
+    "loguru~=0.7.2",
+    "openai~=1.28.1",
+    "PyYAML~=6.0.1",
+    "dependency-injector",
+    "weaviate-client~=4.6.5",
+    "neo4j~=5.22.0"
+]
 dynamic = ["version"]
-
