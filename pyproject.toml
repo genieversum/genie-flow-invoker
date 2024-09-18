@@ -1,9 +1,6 @@
 [build-system]
-requires = ["setuptools>=64", "setuptools-scm>=8"]
+requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
-
-[tool.setuptools_scm]
-"write_to" = "genie_flow_invoker/_version.py"
 
 [tool.setuptools.package-dir]
 genie_flow_invoker = "genie_flow_invoker"
