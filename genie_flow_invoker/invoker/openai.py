@@ -15,8 +15,8 @@ from openai.types.chat import (
 )
 from openai.types.chat.completion_create_params import ResponseFormat
 
-from genie_flow_invoker.invoker import GenieInvoker
-from genie_flow_invoker.invoker import get_config_value
+from genie_flow_invoker import GenieInvoker
+from genie_flow_invoker.utils import get_config_value
 
 
 _CHAT_COMPLETION_MAP = {

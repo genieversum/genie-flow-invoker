@@ -1,10 +1,10 @@
 import json
 from typing import Optional
 
+from loguru import logger
 from requests import Session, Response
 
 from genie_flow_invoker import GenieInvoker
-from loguru import logger
 
 
 class RequestFactory:

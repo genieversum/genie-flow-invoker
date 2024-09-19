@@ -6,8 +6,8 @@ from loguru import logger
 from weaviate import WeaviateClient
 from weaviate.collections.classes.grpc import MetadataQuery
 
-from genie_flow_invoker.invoker import GenieInvoker
-from genie_flow_invoker.invoker import get_config_value
+from genie_flow_invoker import GenieInvoker
+from genie_flow_invoker.utils import get_config_value
 
 
 class WeaviateClientFactory:

@@ -1,4 +1,4 @@
-from genie_flow_invoker.invoker import GenieInvoker
+from genie_flow_invoker import GenieInvoker
 
 
 class VerbatimInvoker(GenieInvoker):

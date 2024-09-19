@@ -1,4 +1,3 @@
-import json
 from hashlib import md5
 from typing import Optional, LiteralString
 
@@ -7,8 +6,8 @@ from neo4j import GraphDatabase, Driver, Result, Record, Query
 from neo4j.exceptions import ResultConsumedError
 from pydantic import BaseModel, Field
 
-from genie_flow_invoker.invoker import GenieInvoker
-from genie_flow_invoker.invoker import ConfigReader
+from genie_flow_invoker import GenieInvoker
+from genie_flow_invoker.utils import ConfigReader
 
 
 _DRIVER: Optional[Driver] = None
