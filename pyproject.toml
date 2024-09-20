@@ -21,7 +21,7 @@ classifiers=[
 dependencies=[
     "loguru~=0.7.2",
     "openai~=1.28.1",
-    "PyYAML~=6.0.1",
+    "PyYAML~=6.0.2",
     "dependency-injector",
     "weaviate-client~=4.6.5",
     "neo4j~=5.22.0"
