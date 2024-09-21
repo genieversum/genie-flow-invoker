@@ -1,10 +1,9 @@
-import json
 import logging
 from abc import ABC
-from json import JSONDecodeError
 from typing import Optional
 
 import openai
+import yaml
 from loguru import logger
 from openai.lib.azure import AzureOpenAI
 from openai.types.chat import (
@@ -117,30 +116,30 @@ class AzureOpenAIChatInvoker(AbstractAzureOpenAIInvoker):
     def invoke(self, content: str) -> str:
         """
         Invoking the chat API of OpenAI involves sending a list of chat elements. The content
-        passed to this should be a JSON list, as follows:
+        passed to this should be a YAML list. If parsing of that YAML document fails, this
+        invoker creates a single chat message form the role 'user' with the content as the
+        content sent.
 
-        .. code-block:: json
-
-        [
-            {
-                "role": "<role name>",
-                "content": "<content>"
-            }
-        ]
+        - role: assistant
+          content: This is a single-line uttering
+        - role: user
+          content: >
+        But multi-line is possible.
+        Like this.
+        These all are put into the same tag.
 
         Here, `role` can be either "system", "assistant" or "user".
 
-        :param content: JSON version of a list of all chat elements that need to be taken into
+        :param content: YAML version of a list of all chat elements that need to be taken into
         account for the chat invocation.
 
-        :returns: the JSON version of the returned response from the API
+        :returns: the raw content of the returned response from the API
         """
         try:
-            messages_raw = json.loads(content)
-        except JSONDecodeError:
-            logger.error("failed to decode JSON content")
-            logger.debug("cannot parse the following content as JSON: '{}'", content)
-            raise ValueError("Invoker input cannot be parsed. Is it JSON?")
+            messages_raw = yaml.safe_load(content)
+        except yaml.YAMLError:
+            logger.debug("cannot parse the following content as YAML: '{}'", content)
+            messages_raw = [dict(role="user", content=content)]
 
         messages = [chat_completion_message(element) for element in messages_raw]
         logger.debug("Invoking OpenAI Chat with the following prompts: {}", messages)
@@ -164,7 +163,6 @@ class AzureOpenAIChatJSONInvoker(AzureOpenAIChatInvoker):
               produce JSON yourself via a system or user message. Without this, the model may
               generate an unending stream of whitespace until the generation reaches the token
               limit
-
     """
 
     @property
