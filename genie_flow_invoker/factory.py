@@ -2,6 +2,7 @@ from queue import Queue
 from typing import Optional, Type
 
 from genie_flow_invoker import GenieInvoker, InvokersPool
+from genie_flow_invoker.class_utils import get_class_from_fully_qualified_name
 
 
 class InvokerFactory:
@@ -9,22 +10,8 @@ class InvokerFactory:
     def __init__(
         self,
         config: Optional[dict],
-        builtin_registry: dict[str, Type[GenieInvoker]] = None,
     ):
         self.config = config or dict()
-        self._registry: dict[str, Type[GenieInvoker]] = builtin_registry or dict()
-
-    def register_invoker(self, invoker_name: str, invoker_class: Type[GenieInvoker]):
-        """
-        Register your own invoker. It then becomes usable in any `meta.yaml` directive in a
-        template directory.
-
-        :param invoker_name: The name of the invoker, as it will appear in the `meta.yaml`
-        :param invoker_class: The invoker class to register.
-        """
-        if invoker_name in self._registry:
-            raise ValueError(f"'{invoker_name}' is already registered")
-        self._registry[invoker_name] = invoker_class
 
     def create_invoker(self, invoker_config: dict) -> GenieInvoker:
         """
@@ -41,12 +28,15 @@ class InvokerFactory:
         except KeyError:
             raise ValueError(f"Invalid invoker config: {invoker_config}")
 
-        try:
-            cls = self._registry[invoker_type]
-        except KeyError:
-            raise ValueError(f"Unknown invoker type: {invoker_type}")
+        cls = get_class_from_fully_qualified_name(invoker_type)
+        if not issubclass(cls, GenieInvoker):
+            raise ValueError(
+                f"Invalid invoker type: {invoker_type}, should be a "
+                f"subclass of genie_flow_invoker.genie.GenieInvoker. "
+                f"See https://gitlab.stopstaringatme.org/bidgenie/core/"
+                f"middleware/invokers/genie-flow-invoker/-/wikis/home")
 
-        config = self.config[invoker_type] if invoker_type in self.config.keys() else dict()
+        config = self.config.get(invoker_type, dict())
         config.update(invoker_config)
         return cls.from_config(config)
 
