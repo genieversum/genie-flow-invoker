@@ -19,7 +19,6 @@ classifiers=[
     'Operating System :: OS Independent',
 ]
 dependencies=[
-    "loguru~=0.7.2",
-    "weaviate-client~=4.6.5",
+    "loguru~=0.7.2"
 ]
 dynamic = ["version"]
