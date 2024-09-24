@@ -21,6 +21,5 @@ classifiers=[
 dependencies=[
     "loguru~=0.7.2",
     "weaviate-client~=4.6.5",
-    "neo4j~=5.22.0"
 ]
 dynamic = ["version"]
