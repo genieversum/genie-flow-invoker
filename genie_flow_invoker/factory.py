@@ -30,7 +30,11 @@ class InvokerFactory:
 
         cls = get_class_from_fully_qualified_name(invoker_type)
         if not issubclass(cls, GenieInvoker):
-            raise ValueError(f"Invalid invoker type: {invoker_type}")
+            raise ValueError(
+                f"Invalid invoker type: {invoker_type}, should be a "
+                f"subclass of genie_flow_invoker.genie.GenieInvoker. "
+                f"See https://gitlab.stopstaringatme.org/bidgenie/core/"
+                f"middleware/invokers/genie-flow-invoker/-/wikis/home")
 
         config = self.config.get(invoker_type, dict())
         config.update(invoker_config)
