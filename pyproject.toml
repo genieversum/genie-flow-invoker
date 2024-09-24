@@ -19,9 +19,6 @@ classifiers=[
     'Operating System :: OS Independent',
 ]
 dependencies=[
-    "loguru~=0.7.2",
-    "openai~=1.28.1",
-    "PyYAML~=6.0.2",
-    "neo4j~=5.22.0"
+    "loguru~=0.7.2"
 ]
 dynamic = ["version"]
