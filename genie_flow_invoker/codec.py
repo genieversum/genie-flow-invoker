@@ -8,13 +8,13 @@ from loguru import logger
 class AbstractInputDecoder(abc.ABC):
 
     @abc.abstractmethod
-    def _decode_input(self, content: str) -> dict[str, Any]:
+    def _decode_input(self, content: str) -> Any:
         """
         The generic interface to decode an input from string to a
         dictionary. Must be implemented by subclasses.
 
         :param content: the string representation of the content to decode
-        :return: a dictionary containing the decoded content
+        :return: the decoded content
         """
         raise NotImplementedError()
 
