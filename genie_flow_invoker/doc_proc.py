@@ -29,7 +29,7 @@ class RawDocumentFile(AbstractNamedDocument):
 class DocumentChunk(BaseModel):
     chunk_id: Optional[str] = Field(
         None,
-        description="The ID of the document chunk, will be set to uuid5 of content",
+        description="The ID of the document chunk, if not given it will be set to uuid5 of content",
     )
 
     @classmethod
