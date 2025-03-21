@@ -1,11 +1,12 @@
 import base64
 import io
 import uuid
-from functools import cached_property
 from typing import Optional, Iterator, Literal
-from wsgiref.validate import validator
 
 from pydantic import BaseModel, Field, model_validator
+
+
+NAMESPACE_DOC_PROC = uuid.UUID("e3bf4d4c-068e-11f0-aa96-000d3a0b8a34")
 
 
 class AbstractNamedDocument(BaseModel):
@@ -35,7 +36,7 @@ class DocumentChunk(BaseModel):
     @model_validator(mode='before')
     def pre_init(cls, values):
         content = values.get("content", None) or ""
-        chunk_id = values.get("chunk_id", str(uuid.uuid5(uuid.NAMESPACE_OID, content)))
+        chunk_id = values.get("chunk_id", str(uuid.uuid5(NAMESPACE_DOC_PROC, content)))
         values["chunk_id"] = chunk_id
         return values
 
