@@ -28,11 +28,10 @@ class RawDocumentFile(AbstractNamedDocument):
 
 class DocumentChunk(BaseModel):
     chunk_id: Optional[str] = Field(
-        None,
+        default=None,
         description="The ID of the document chunk, if not given it will be set to uuid5 of content",
     )
 
-    @classmethod
     @model_validator(mode='before')
     def pre_init(cls, values):
         content = values.get("content", None) or ""
