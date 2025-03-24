@@ -3,7 +3,10 @@ import io
 import uuid
 from typing import Optional, Iterator, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
+
+
+NAMESPACE_DOC_PROC = uuid.UUID("e3bf4d4c-068e-11f0-aa96-000d3a0b8a34")
 
 
 class AbstractNamedDocument(BaseModel):
@@ -24,10 +27,18 @@ class RawDocumentFile(AbstractNamedDocument):
 
 
 class DocumentChunk(BaseModel):
-    chunk_id: str = Field(
-        default_factory=lambda: uuid.uuid4().hex,
-        description="The ID of the document chunk.",
+    chunk_id: Optional[str] = Field(
+        default=None,
+        description="The ID of the document chunk, if not given it will be set to uuid5 of content",
     )
+
+    @model_validator(mode='before')
+    def pre_init(cls, values):
+        content = values.get("content", None) or ""
+        chunk_id = values.get("chunk_id", str(uuid.uuid5(NAMESPACE_DOC_PROC, content)))
+        values["chunk_id"] = chunk_id
+        return values
+
     content: str = Field(
         description="The chunk of text of a document",
     )
