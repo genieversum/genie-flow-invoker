@@ -1,7 +1,7 @@
 import base64
 import io
 import uuid
-from typing import Optional, Iterator, Literal
+from typing import Optional, Iterator, Literal, Union
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -47,6 +47,10 @@ class DocumentChunk(BaseModel):
     )
     hierarchy_level: int = Field(
         description="The level of hierarchy that this chunk belongs to",
+    )
+    custom_properties: Optional[dict[str, Union[None, bool, int, float, str]]] = Field(
+        default=None,
+        description="A dictionary of custom properties that will be stored with this chunk",
     )
     parent_id: Optional[str] = Field(
         description="The ID of an optional upward related chunk",
