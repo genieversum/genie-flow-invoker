@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field, model_validator
 
 CustomPropertyType = TypeAliasType(
     "CustomPropertyType",
-    "Union[bool, int, float, str, None, dict[str, CustomPropertyType], list[CustomPropertyType]]"
+    "Union[bool, int, float, str, uuid.UUID, None, dict[str, CustomPropertyType], list[CustomPropertyType]]"
 )
 NAMESPACE_DOC_PROC = uuid.UUID("e3bf4d4c-068e-11f0-aa96-000d3a0b8a34")
 
