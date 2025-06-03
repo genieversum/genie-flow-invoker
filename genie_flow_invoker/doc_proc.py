@@ -1,11 +1,15 @@
 import base64
 import io
 import uuid
-from typing import Optional, Iterator, Literal, Union, TypeAlias
+from typing import Optional, Iterator, Literal, Union
+from typing_extensions import TypeAliasType
 
 from pydantic import BaseModel, Field, model_validator
 
-AllowedPropertyType: TypeAlias = Union[None, bool, int, float, str]
+CustomPropertyType = TypeAliasType(
+    "CustomPropertyType",
+    "Union[bool, int, float, str, uuid.UUID, None, dict[str, CustomPropertyType], list[CustomPropertyType]]"
+)
 NAMESPACE_DOC_PROC = uuid.UUID("e3bf4d4c-068e-11f0-aa96-000d3a0b8a34")
 
 
@@ -48,7 +52,7 @@ class DocumentChunk(BaseModel):
     hierarchy_level: int = Field(
         description="The level of hierarchy that this chunk belongs to",
     )
-    custom_properties: Optional[dict[str, Union[AllowedPropertyType, list[AllowedPropertyType]]]] = Field(
+    custom_properties: Optional[dict[str, CustomPropertyType]] = Field(
         default=None,
         description="A dictionary of custom properties that will be stored with this chunk",
     )
