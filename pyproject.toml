@@ -13,6 +13,11 @@ maintainers = [
 description = "Core classes for Genie Flow Invokers"
 readme = "README.md"
 requires-python = ">=3.11.0"
+license = "Apache-2.0"
+license-files = [
+    "LICENSES",
+    "NOTICES",
+]
 classifiers=[
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
