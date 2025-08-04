@@ -1,4 +1,6 @@
 # Genie Flow Invoker framework
+[![PyPI version](https://badge.fury.io/py/genie-flow-invoker.svg?icon=si%3Apython)](https://badge.fury.io/py/genie-flow-invoker)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/genie-flow-invoker)
 
 This package contains the base classes for Genie Flow Invokers.
 
