@@ -1,5 +1,5 @@
-from queue import Queue
-from typing import Optional, Type
+from multiprocessing import Manager
+from typing import Optional
 
 from genie_flow_invoker import GenieInvoker, InvokersPool
 from genie_flow_invoker.class_utils import get_class_from_fully_qualified_name
@@ -12,6 +12,7 @@ class InvokerFactory:
         config: Optional[dict],
     ):
         self.config = config or dict()
+        self._manager = Manager()
 
     def create_invoker(self, invoker_config: dict) -> GenieInvoker:
         """
@@ -43,7 +44,7 @@ class InvokerFactory:
     def create_invoker_pool(self, pool_size: int, config: dict) -> InvokersPool:
         assert pool_size > 0, f"Should not create invoker pool of size {pool_size}"
 
-        queue = Queue()
+        queue = self._manager.Queue()
         for _ in range(pool_size):
             queue.put(self.create_invoker(config))
 
