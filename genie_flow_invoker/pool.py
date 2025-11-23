@@ -1,4 +1,3 @@
-from queue import Queue
 from typing import Optional
 
 from genie_flow_invoker import GenieInvoker
@@ -10,7 +9,7 @@ class InvokersPool:
     context is closed. Makes the queue serve as a pool of invokers.
     """
 
-    def __init__(self, queue: Queue[GenieInvoker]):
+    def __init__(self, queue):
         self._queue = queue
         self._current_invoker: Optional[GenieInvoker] = None
 
