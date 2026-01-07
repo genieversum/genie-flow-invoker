@@ -62,9 +62,6 @@ class RetrySpecs(object):
                 )
             exceptions.append(retry_exception)
 
-        # if config.get("retry_jitter", None):
-        #     jitter = config.get("retry_jitter").lower == "true"
-
         return cls(
             autoretry_for=exceptions,
             max_retries=config.get("max_retries", None),
