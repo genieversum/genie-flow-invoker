@@ -3,7 +3,6 @@ from typing import Optional
 
 from genie_flow_invoker import GenieInvoker, InvokersPool
 from genie_flow_invoker.class_utils import get_class_from_fully_qualified_name
-from genie_flow_invoker.error_config import RetrySpecs, RetryConfig
 
 
 class InvokerFactory:

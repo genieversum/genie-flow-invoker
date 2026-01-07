@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import TypedDict, Optional, Union, List, Type
+from typing import TypedDict, Optional, List, Type
 
 from genie_flow_invoker.class_utils import get_class_from_fully_qualified_name
 
