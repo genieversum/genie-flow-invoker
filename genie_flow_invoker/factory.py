@@ -3,6 +3,7 @@ from typing import Optional
 
 from genie_flow_invoker import GenieInvoker, InvokersPool
 from genie_flow_invoker.class_utils import get_class_from_fully_qualified_name
+from genie_flow_invoker.error_config import RetrySpecs, RetryConfig
 
 
 class InvokerFactory:
@@ -33,11 +34,11 @@ class InvokerFactory:
             raise ValueError(
                 f"Invalid invoker type: {invoker_type}, should be a "
                 f"subclass of genie_flow_invoker.genie.GenieInvoker. "
-                f"See https://gitlab.stopstaringatme.org/bidgenie/core/"
-                f"middleware/invokers/genie-flow-invoker/-/wikis/home")
+            )
 
-        on_error_config = self.config.pop("on_error", None)
-        retry_config = self.config.pop("retry", None)
+        on_error_config = invoker_config.pop("on_error", None)
+        retry_config = invoker_config.pop("retry", None)
+
         config = self.config.get(invoker_type, dict())
         config.update(invoker_config)
         return cls.from_config_with_error_handling(config, on_error_config, retry_config)

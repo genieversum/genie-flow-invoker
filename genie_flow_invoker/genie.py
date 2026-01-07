@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from genie_flow_invoker.error_config import OnErrorConfig, RetryConfig, compile_exception_list
+from genie_flow_invoker.error_config import OnErrorConfig, RetryConfig, RetrySpecs, OnErrorSpecs
 
 
 class GenieInvoker(ABC):
@@ -14,15 +14,15 @@ class GenieInvoker(ABC):
 
     This class is subclassed with specific classes for external services.
     """
-    _on_error_config: Optional[OnErrorConfig] = None
-    _retry_config: Optional[RetryConfig] = None
+    _on_error_specs: Optional[OnErrorSpecs] = None
+    _retry_specs: Optional[RetrySpecs] = None
 
     @classmethod
     def from_config_with_error_handling(
             cls,
             config: dict,
-            on_error: Optional[str | dict],
-            retry: Optional[dict]
+            on_error: Optional[str | OnErrorConfig],
+            retry: Optional[RetryConfig]
     ):
         """
         Create a new instance of the invoker with optional error handling and retry configs.
@@ -35,46 +35,20 @@ class GenieInvoker(ABC):
         out. That dict can optionally have a 'content' key that will be a template that is
         rendered as parameter to the sending that event.
 
-        `retry` is an optional dictionary that contains the following keys:
-        * `autoretry_for`: a list of FQNs of classes to trigger a retry for
-        * `max_retries`: the maximum number of times the invoker will be retried for
-        * `retry_backoff`: a boolean or float specifying if an exponential backoff should be
-                         applied with base 1 second (boolean) or the given base number of
-                         seconds.
-        * `retry_backoff_max`: the max number of seconds to backoff.
-        * `retry_jitter`: the random number to subtract from the backoff
-
+        `retry` is an optional `RetryConfig` with the appropriate properties
 
         :param config: the configuration dictionary for the invoker
         :param on_error: optionally, either a string or a dictionary
         :param retry: an optional dictionary
         :return: a new instance of the invoker
         """
-        on_error_config: Optional[OnErrorConfig] = None
-        if on_error is not None:
-            if isinstance(on_error, str):
-                on_error_config = OnErrorConfig(event=None, content=on_error)
-            else:
-                on_error_config = OnErrorConfig(
-                    event=on_error.get("event"),
-                    content=on_error.get("content", None),
-                )
-
-        retry_config: Optional[RetryConfig] = None
-        if retry is not None:
-            retry_for = retry.get("autoretry_for", None),
-            retry_exceptions = compile_exception_list(retry_for) if retry is not None else None
-            retry_config = RetryConfig(
-                autoretry_for=retry_exceptions,
-                max_retries=retry.get("max_retries", None),
-                retry_backoff=retry.get("retry_backoff", None),
-                retry_backoff_max=retry.get("retry_backoff_max", None),
-                retry_jitter=retry.get("retry_jitter", None),
-            )
-
         invoker = cls.from_config(config)
-        invoker._on_error_config = on_error_config
-        invoker._retry_config = retry_config
+
+        if on_error is not None:
+            invoker._on_error_specs = OnErrorSpecs.from_config(on_error)
+        if retry is not None:
+            invoker._retry_specs = RetrySpecs.from_config(retry)
+
         return invoker
 
     @classmethod
