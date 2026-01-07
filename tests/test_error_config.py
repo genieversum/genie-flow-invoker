@@ -15,7 +15,7 @@ class TestInvoker(GenieInvoker):
         return cls()
 
 
-def test_no_on_error(invoker_factory):
+def test_none(invoker_factory):
     meta = """
 type: tests.test_error_config.TestInvoker
     """
