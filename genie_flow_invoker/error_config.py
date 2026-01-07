@@ -45,6 +45,7 @@ class RetrySpecs(object):
     * `retry_backoff_max`: the max number of seconds to backoff.
     * `retry_jitter`: a boolean to specify if a random number must be subtract from the backoff
     """
+
     autoretry_for: Optional[List[Type[Exception]]] = None
     max_retries: Optional[int] = None
     retry_backoff: Optional[bool | float] = None

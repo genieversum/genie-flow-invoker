@@ -1,7 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from genie_flow_invoker.error_config import OnErrorConfig, RetryConfig, RetrySpecs, OnErrorSpecs
+from genie_flow_invoker.error_config import (
+    OnErrorConfig,
+    RetryConfig,
+    RetrySpecs,
+    OnErrorSpecs,
+)
 
 
 class GenieInvoker(ABC):
@@ -14,15 +19,16 @@ class GenieInvoker(ABC):
 
     This class is subclassed with specific classes for external services.
     """
+
     _on_error_specs: Optional[OnErrorSpecs] = None
     _retry_specs: Optional[RetrySpecs] = None
 
     @classmethod
     def from_config_with_error_handling(
-            cls,
-            config: dict,
-            on_error: Optional[str | OnErrorConfig],
-            retry: Optional[RetryConfig]
+        cls,
+        config: dict,
+        on_error: Optional[str | OnErrorConfig],
+        retry: Optional[RetryConfig],
     ):
         """
         Create a new instance of the invoker with optional error handling and retry configs.
