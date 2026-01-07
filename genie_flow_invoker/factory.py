@@ -33,12 +33,18 @@ class InvokerFactory:
             raise ValueError(
                 f"Invalid invoker type: {invoker_type}, should be a "
                 f"subclass of genie_flow_invoker.genie.GenieInvoker. "
-                f"See https://gitlab.stopstaringatme.org/bidgenie/core/"
-                f"middleware/invokers/genie-flow-invoker/-/wikis/home")
+            )
+
+        on_error_config = invoker_config.pop("on_error", None)
+        retry_config = invoker_config.pop("retry", None)
 
         config = self.config.get(invoker_type, dict())
         config.update(invoker_config)
-        return cls.from_config(config)
+        return cls.from_config_with_error_handling(
+            config,
+            on_error_config,
+            retry_config,
+        )
 
     def create_invoker_pool(self, pool_size: int, config: dict) -> InvokersPool:
         assert pool_size > 0, f"Should not create invoker pool of size {pool_size}"
