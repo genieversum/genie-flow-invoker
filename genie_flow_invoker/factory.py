@@ -47,7 +47,8 @@ class InvokerFactory:
         )
 
     def create_invoker_pool(self, pool_size: int, config: dict) -> InvokersPool:
-        assert pool_size > 0, f"Should not create invoker pool of size {pool_size}"
+        if pool_size <= 0:
+            raise ValueError(f"Should not create invoker pool of size {pool_size}")
 
         queue = Queue()
         for _ in range(pool_size):
